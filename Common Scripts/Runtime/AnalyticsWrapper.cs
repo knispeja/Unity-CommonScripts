@@ -4,21 +4,30 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Analytics;
 
+/// <summary>
+/// Safely wraps the Unity Analytics library with additional logging and
+/// preprocessor configuration options for testing with the Editor.
+/// </summary>
 public static class AnalyticsWrapper
 {
-#if UNITY_EDITOR
-	private const bool _ENABLE_ANALYTICS_IN_EDITOR = false;
-	private const bool _LOG_ANALYTICS_EVENTS_IN_EDITOR = true;
-
+#if UNITY_EDITOR || DISABLE_ANALYTICS
 	static AnalyticsWrapper()
 	{
-		// Diable analytics in editor only to avoid pollution
+#if DISABLE_ANALYTICS
+		Debug.LogWarning("Unity Analytics is completely disabled (not just in the editor).");
+#endif
+
+		// Diable analytics in editor by default to avoid pollution
 		// Remember than you CAN reset Unity Analytics stats completely
-		Analytics.enabled = _ENABLE_ANALYTICS_IN_EDITOR;
+#if ENABLE_ANALYTICS_IN_EDITOR && !DISABLE_ANALYTICS
+		Analytics.enabled = true;
+#else
+		Analytics.enabled = false;
+#endif
 	}
 #endif
 
-	public static void SendEventSafe(string eventName, IDictionary<string, object> eventData = null)
+		public static void SendEventSafe(string eventName, IDictionary<string, object> eventData = null)
 	{
 		SendEventSafe(eventName, () => eventData);
 	}
@@ -42,8 +51,8 @@ public static class AnalyticsWrapper
 				eventData = new Dictionary<string, object>() {{ "error", e.Message }};
 			}
 
-#if UNITY_EDITOR
-			if (_LOG_ANALYTICS_EVENTS_IN_EDITOR && eventData != null)
+#if UNITY_EDITOR && LOG_ANALYTICS_EVENTS_IN_EDITOR
+			if (eventData != null)
 			{
 				var builder = new StringBuilder();
 
