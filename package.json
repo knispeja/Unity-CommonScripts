@@ -1,0 +1,10 @@
+{
+    "name": "com.jacobknispel.commonscripts",
+    "displayName": "Jacob's Common Scripts",
+    "description": "Scripts I use commonly in my games",
+    "version": "1.0.0",
+    "dependencies": {},
+    "author": {
+        "name": "Jacob Knispel"
+    }
+}
