@@ -5,9 +5,9 @@
 /// Unlike directly setting <see cref="Renderer.sortingLayerName"/> or <see cref="Renderer.sortingLayerID"/>,
 /// these methods log warnings if the layer is invalid and will not change the layer.
 /// </summary>
-public static class LayerUtilities
+public static class LayerExtensions
 {
-	public static bool TrySetLayer(Renderer renderer, string layerName)
+	public static bool TrySetLayer(this Renderer renderer, string layerName)
 	{
 		int sortingLayerId = SortingLayer.NameToID(layerName);
 		if (sortingLayerId == 0)
@@ -20,7 +20,7 @@ public static class LayerUtilities
 		return true;
 	}
 
-	public static bool TrySetLayer(Renderer renderer, int layerId)
+	public static bool TrySetLayer(this Renderer renderer, int layerId)
 	{
 		if (!SortingLayer.IsValid(layerId))
 		{

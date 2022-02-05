@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1]
+### Added
+- PlayMode tests for ComponentPool
+
+### Changed
+- LayerUtilities to LayerExtensions
+
+
 ## [1.1.0]
 ### Added
 - Analytics menu for configuring Analytics wrapper preprocessor defines

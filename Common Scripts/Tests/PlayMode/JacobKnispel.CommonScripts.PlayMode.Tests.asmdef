@@ -1,14 +1,12 @@
 {
-    "name": "JacobKnispel.CommonScripts.Runtime.Tests",
+    "name": "JacobKnispel.CommonScripts.PlayMode.Tests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "JacobKnispel.CommonScripts.Runtime"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
