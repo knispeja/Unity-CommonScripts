@@ -9,7 +9,6 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - LayerUtilities to LayerExtensions
 
-
 ## [1.1.0]
 ### Added
 - Analytics menu for configuring Analytics wrapper preprocessor defines
