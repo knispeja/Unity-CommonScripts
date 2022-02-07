@@ -18,13 +18,16 @@ namespace Tests
 
 		[Test]
 		[TestCase(-81)]
-		public void DecibelsToPercentVolume_ThrowsArgumentOutOfRangeException(float decibels)
+		public void DecibelsToPercentVolume_DoesNotThrowArgumentOutOfRangeException(float decibels)
 		{
 			// Arrange
-			// Act, Assert
-			Assert.Throws<ArgumentOutOfRangeException>(() =>
-					AudioUtilities.DecibelsToPercentVolume(decibels)
-				);
+			const float expectedResult = 0f;
+
+			// Act
+			float result = AudioUtilities.DecibelsToPercentVolume(decibels);
+
+			// Assert
+			Assert.AreEqual(expectedResult, result);
 		}
 	}
 }

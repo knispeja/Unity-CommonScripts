@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.2.1]
+### Fixed
+- AudioUtilities can now handle decibel values below -80
+
 ## [1.2.0]
 ### Added
 - UnityUtilities for finding inactive objects

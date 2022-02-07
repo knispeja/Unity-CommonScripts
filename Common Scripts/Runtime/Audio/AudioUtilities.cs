@@ -8,9 +8,9 @@ public static class AudioUtilities
 
 	public static float DecibelsToPercentVolume(float volumeDecibels)
 	{
-		if (volumeDecibels < _MIN_VOLUME_DECIBELS)
+		if (volumeDecibels <= _MIN_VOLUME_DECIBELS)
 		{
-			throw new ArgumentOutOfRangeException(nameof(volumeDecibels), "Decibels must be at or above -80.0");
+			return 0f;
 		}
 
 		return Mathf.Pow(10.0f, volumeDecibels / 20.0f);
