@@ -1,6 +1,13 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
+
+## [1.2.0]
+### Added
+- UnityUtilities for finding inactive objects
+- IsAnyPointerOverGameObject takes an optional default return value
+
+### Fixed
+- IsAnyPointerOverGameObject no longer throws when no event system is set
 
 ## [1.1.1]
 ### Added

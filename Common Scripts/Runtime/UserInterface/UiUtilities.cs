@@ -24,11 +24,16 @@ public static class UiUtilities
 		canvasGroup.blocksRaycasts = true;
 	}
 
-	public static bool IsAnyPointerOverGameObject(EventSystem eventSystem = null)
+	public static bool IsAnyPointerOverGameObject(EventSystem eventSystem = null, bool defaultIfNoEventSystem = false)
 	{
 		if (eventSystem == null)
 		{
 			eventSystem = EventSystem.current;
+
+			if (eventSystem == null)
+			{
+				return defaultIfNoEventSystem;
+			}
 		}
 
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID || UNITY_WP_8_1)
