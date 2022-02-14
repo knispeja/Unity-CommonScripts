@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
-namespace Tests
+﻿namespace KnispelCommon.Tests.Isometric
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using KnispelCommon.Isometric;
+	using NUnit.Framework;
+
 	public class Vector2IsometricTests
 	{
 		private static IEnumerable<Vector2Isometric> AllIsometricVectors => Enum.GetValues(typeof(Vector2Isometric)).Cast<Vector2Isometric>();

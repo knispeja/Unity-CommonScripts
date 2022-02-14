@@ -1,40 +1,42 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-
-public static class UiUtilities
+﻿namespace KnispelCommon.UserInterface
 {
-	public static void CloseApplication()
-	{
-		#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
-		#else
-			Application.Quit();
-		#endif
-	}
+	using UnityEngine;
+	using UnityEngine.EventSystems;
 
-	public static void HideGroup(CanvasGroup canvasGroup)
+	public static class UiUtilities
 	{
-		canvasGroup.alpha = 0.0f;
-		canvasGroup.blocksRaycasts = false;
-	}
-
-	public static void ShowGroup(CanvasGroup canvasGroup)
-	{
-		canvasGroup.alpha = 1.0f;
-		canvasGroup.blocksRaycasts = true;
-	}
-
-	public static bool IsAnyPointerOverGameObject(EventSystem eventSystem = null, bool defaultIfNoEventSystem = false)
-	{
-		if (eventSystem == null)
+		public static void CloseApplication()
 		{
-			eventSystem = EventSystem.current;
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
+		}
 
+		public static void HideGroup(CanvasGroup canvasGroup)
+		{
+			canvasGroup.alpha = 0.0f;
+			canvasGroup.blocksRaycasts = false;
+		}
+
+		public static void ShowGroup(CanvasGroup canvasGroup)
+		{
+			canvasGroup.alpha = 1.0f;
+			canvasGroup.blocksRaycasts = true;
+		}
+
+		public static bool IsAnyPointerOverGameObject(EventSystem eventSystem = null, bool defaultIfNoEventSystem = false)
+		{
 			if (eventSystem == null)
 			{
-				return defaultIfNoEventSystem;
+				eventSystem = EventSystem.current;
+
+				if (eventSystem == null)
+				{
+					return defaultIfNoEventSystem;
+				}
 			}
-		}
 
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID || UNITY_WP_8_1)
 		for (int i = 0; i < Input.touchCount; i++)
@@ -51,7 +53,8 @@ public static class UiUtilities
 
 		return false;
 #else
-		return eventSystem.IsPointerOverGameObject();
+			return eventSystem.IsPointerOverGameObject();
 #endif
+		}
 	}
 }

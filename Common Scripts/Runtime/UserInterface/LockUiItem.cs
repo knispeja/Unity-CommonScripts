@@ -1,37 +1,40 @@
-﻿using UnityEngine;
-
-[RequireComponent(typeof(RectTransform))]
-public class LockUiItem : MonoBehaviour
+﻿namespace KnispelCommon.UserInterface
 {
-	[SerializeField] private bool locked = true;
+	using UnityEngine;
 
-	private RectTransform rectTransform;
-	private Vector3 originalPosition;
-
-	public bool Locked
+	[RequireComponent(typeof(RectTransform))]
+	public class LockUiItem : MonoBehaviour
 	{
-		get
+		[SerializeField] private bool locked = true;
+
+		private RectTransform rectTransform;
+		private Vector3 originalPosition;
+
+		public bool Locked
 		{
-			return locked;
+			get
+			{
+				return locked;
+			}
+			set
+			{
+				locked = value;
+				originalPosition = rectTransform.position;
+			}
 		}
-		set
+
+		private void Awake()
 		{
-			locked = value;
+			rectTransform = GetComponent<RectTransform>();
 			originalPosition = rectTransform.position;
 		}
-	}
 
-	private void Awake()
-	{
-		rectTransform = GetComponent<RectTransform>();
-		originalPosition = rectTransform.position;
-	}
-
-	private void Update()
-	{
-		if (locked && originalPosition != rectTransform.position)
+		private void Update()
 		{
-			gameObject.GetComponent<RectTransform>().position = originalPosition;
+			if (locked && originalPosition != rectTransform.position)
+			{
+				gameObject.GetComponent<RectTransform>().position = originalPosition;
+			}
 		}
 	}
 }

@@ -1,8 +1,9 @@
-using System;
-using NUnit.Framework;
-
-namespace Tests
+namespace KnispelCommon.Tests.Audio
 {
+	using System;
+	using KnispelCommon.Audio;
+	using NUnit.Framework;
+
 	public class AudioUtilitiesTests
 	{
 		[Test]

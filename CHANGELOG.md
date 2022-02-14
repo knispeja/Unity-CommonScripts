@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.0.0]
+### Added
+- Event listener design pattern for easy inspector driven event listening
+- Player preference wrappers designed for interacting with prefs through scriptable objects
+
+### Changed
+- Many breaking namespace changes, moved classes into the KnispelCommon namespace
+
 ## [1.2.1]
 ### Fixed
 - AudioUtilities can now handle decibel values below -80

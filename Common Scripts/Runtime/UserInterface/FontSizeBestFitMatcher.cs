@@ -1,87 +1,90 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-/// <summary>
-/// ISSUES:
-/// Doesn't really work if you need to change the text values.
-/// Also doesn't work if the screen resizes and text is on different rect transforms.
-/// Needs to watch canvas size.
-/// </summary>
-public class FontSizeBestFitMatcher : MonoBehaviour
+﻿namespace KnispelCommon.UserInterface
 {
-	public Text[] textList;
-	private HashSet<Text> textNotToReenable;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using UnityEngine.UI;
 
-	private bool initialized = false;
-	private bool resizing = false;
-
-	private void Awake()
+	/// <summary>
+	/// ISSUES:
+	/// Doesn't really work if you need to change the text values.
+	/// Also doesn't work if the screen resizes and text is on different rect transforms.
+	/// Needs to watch canvas size.
+	/// </summary>
+	public class FontSizeBestFitMatcher : MonoBehaviour
 	{
-		textNotToReenable = new HashSet<Text>();
-	}
+		public Text[] textList;
+		private HashSet<Text> textNotToReenable;
 
-	public void SetTextToBestFit()
-	{
-		if (resizing)
+		private bool initialized = false;
+		private bool resizing = false;
+
+		private void Awake()
 		{
-			return;
+			textNotToReenable = new HashSet<Text>();
 		}
 
-		foreach (var text in textList)
+		public void SetTextToBestFit()
 		{
-			text.resizeTextMaxSize = 99999;
-
-			if (!text.enabled)
+			if (resizing)
 			{
-				textNotToReenable.Add(text);
+				return;
+			}
+
+			foreach (var text in textList)
+			{
+				text.resizeTextMaxSize = 99999;
+
+				if (!text.enabled)
+				{
+					textNotToReenable.Add(text);
+				}
+			}
+
+			resizing = true;
+		}
+
+		private void Update()
+		{
+			if (resizing)
+			{
+				ApplySizes();
+			}
+
+			if (!initialized)
+			{
+				SetTextToBestFit();
+				initialized = true;
 			}
 		}
 
-		resizing = true;
-	}
-
-	private void Update()
-	{
-		if (resizing)
+		public void ApplySizes()
 		{
-			ApplySizes();
-		}
+			resizing = false;
 
-		if (!initialized)
-		{
-			SetTextToBestFit();
-			initialized = true;
-		}
-	}
-
-	public void ApplySizes()
-	{
-		resizing = false;
-
-		if (textList.Length < 0)
-		{
-			return;
-		}
-		
-		int matchedFontSize = int.MaxValue;
-
-		foreach (var text in textList)
-		{
-			if (!textNotToReenable.Contains(text))
+			if (textList.Length < 0)
 			{
-				text.enabled = true;
+				return;
 			}
 
-			if (text.cachedTextGenerator.fontSizeUsedForBestFit < matchedFontSize)
-			{
-				matchedFontSize = UiTextUtilities.GetCurrentDynamicFontSize(text);
-			}
-		}
+			int matchedFontSize = int.MaxValue;
 
-		foreach (var item in textList)
-		{
-			item.resizeTextMaxSize = matchedFontSize;
+			foreach (var text in textList)
+			{
+				if (!textNotToReenable.Contains(text))
+				{
+					text.enabled = true;
+				}
+
+				if (text.cachedTextGenerator.fontSizeUsedForBestFit < matchedFontSize)
+				{
+					matchedFontSize = UiTextUtilities.GetCurrentDynamicFontSize(text);
+				}
+			}
+
+			foreach (var item in textList)
+			{
+				item.resizeTextMaxSize = matchedFontSize;
+			}
 		}
 	}
 }

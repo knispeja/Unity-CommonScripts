@@ -1,31 +1,34 @@
-﻿using System;
-using UnityEngine;
-
-internal class PooledObject : MonoBehaviour
+﻿namespace KnispelCommon.ComponentPool
 {
-	private Action enableAction;
-	private Action disableAction;
-	private Action destroyAction;
+	using System;
+	using UnityEngine;
 
-	public void Initialize(Action actionOnEnable, Action actionOnDisable, Action actionOnDestroy)
+	internal class PooledObject : MonoBehaviour
 	{
-		enableAction = actionOnEnable;
-		disableAction = actionOnDisable;
-		destroyAction = actionOnDestroy;
-	}
+		private Action enableAction;
+		private Action disableAction;
+		private Action destroyAction;
 
-	private void OnEnable()
-	{
-		enableAction.Invoke();
-	}
+		public void Initialize(Action actionOnEnable, Action actionOnDisable, Action actionOnDestroy)
+		{
+			enableAction = actionOnEnable;
+			disableAction = actionOnDisable;
+			destroyAction = actionOnDestroy;
+		}
 
-	private void OnDisable()
-	{
-		disableAction.Invoke();
-	}
+		private void OnEnable()
+		{
+			enableAction.Invoke();
+		}
 
-	private void OnDestroy()
-	{
-		destroyAction.Invoke();
+		private void OnDisable()
+		{
+			disableAction.Invoke();
+		}
+
+		private void OnDestroy()
+		{
+			destroyAction.Invoke();
+		}
 	}
 }

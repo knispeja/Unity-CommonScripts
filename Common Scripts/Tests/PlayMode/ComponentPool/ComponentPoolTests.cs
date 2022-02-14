@@ -1,13 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-
-namespace Tests
+namespace KnispelCommon.Tests.ComponentPool
 {
+	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Linq;
+	using KnispelCommon.ComponentPool;
+	using NUnit.Framework;
+	using UnityEngine;
+	using UnityEngine.TestTools;
+
 	public class ComponentPoolTests
 	{
 		[UnityTest]

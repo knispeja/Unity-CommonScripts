@@ -1,12 +1,15 @@
-﻿using NUnit.Framework;
-using UnityEngine;
-
-[SetUpFixture]
-public class TestSetup
+﻿namespace KnispelCommon.Tests
 {
-	[OneTimeSetUp]
-	public void SetUp()
+	using NUnit.Framework;
+	using UnityEngine;
+
+	[SetUpFixture]
+	public class TestSetup
 	{
-		Debug.unityLogger.logEnabled = false;
+		[OneTimeSetUp]
+		public void SetUp()
+		{
+			Debug.unityLogger.logEnabled = false;
+		}
 	}
 }

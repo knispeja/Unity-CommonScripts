@@ -1,6 +1,9 @@
-using UnityEngine;
-
-public class TestComponent : MonoBehaviour
+namespace KnispelCommon.Tests.ComponentPool
 {
-	public string message = null;
+	using UnityEngine;
+
+	public class TestComponent : MonoBehaviour
+	{
+		public string message = null;
+	}
 }
