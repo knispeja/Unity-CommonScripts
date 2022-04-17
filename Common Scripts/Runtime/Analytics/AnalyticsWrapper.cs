@@ -1,5 +1,6 @@
 ﻿namespace KnispelCommon.Analytics
 {
+	using KnispelCommon.Logging;
 	using System;
 	using System.Collections.Generic;
 	using System.Text;
@@ -16,13 +17,13 @@
 		static AnalyticsWrapper()
 		{
 #if DISABLE_ANALYTICS
-		Debug.LogWarning("Unity Analytics is completely disabled (not just in the editor).");
+			LogWrapper.LogWarning("Unity Analytics is completely disabled (not just in the editor).");
 #endif
 
-			// Diable analytics in editor by default to avoid pollution
+			// Disable analytics in editor by default to avoid pollution
 			// Remember than you CAN reset Unity Analytics stats completely
 #if ENABLE_ANALYTICS_IN_EDITOR && !DISABLE_ANALYTICS
-		Analytics.enabled = true;
+			Analytics.enabled = true;
 #else
 			Analytics.enabled = false;
 #endif
@@ -49,7 +50,7 @@
 				}
 				catch (Exception e)
 				{
-					Debug.LogWarning($"Failed to create event data for analytics event {eventName}: {e.Message}");
+					LogWrapper.LogWarning($"Failed to create event data for analytics event {eventName}: {e.Message}");
 					eventData = new Dictionary<string, object>() { { "error", e.Message } };
 				}
 
@@ -64,7 +65,7 @@
 				{
 					builder.AppendLine($"{kvp.Key} : {kvp.Value}");
 				}
-				Debug.Log(builder);
+				LogWrapper.LogInformation(builder);
 			}
 #endif
 
@@ -92,7 +93,7 @@
 					issueReason = Enum.GetName(typeof(AnalyticsResult), result.Value);
 				}
 
-				Debug.LogWarning($"Unity Analytics encountered an issue, reason: {issueReason}");
+				LogWrapper.LogWarning($"Unity Analytics encountered an issue, reason: {issueReason}");
 			}
 		}
 	}

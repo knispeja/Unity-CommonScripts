@@ -1,5 +1,6 @@
 ﻿namespace KnispelCommon.UserInterface
 {
+	using KnispelCommon.Logging;
 	using System;
 	using UnityEngine;
 	using UnityEngine.UI;
@@ -27,7 +28,7 @@
 		{
 			if (canvas.renderMode != RenderMode.ScreenSpaceCamera)
 			{
-				Debug.LogError($"{nameof(UiTextUtilities)} only work when canvas is rendering in camera space");
+				LogWrapper.LogWarning($"{nameof(UiTextUtilities)} only work when canvas is rendering in camera space");
 			}
 		}
 #endif

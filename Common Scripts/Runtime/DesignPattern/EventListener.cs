@@ -1,5 +1,6 @@
 namespace KnispelCommon.DesignPattern
 {
+	using KnispelCommon.Logging;
 	using System;
 	using UnityEngine;
 	using UnityEngine.Events;
@@ -37,7 +38,7 @@ namespace KnispelCommon.DesignPattern
 		{
 			if (eventToListenTo == null)
 			{
-				Debug.LogWarning($"Event listener {gameObject.name} has no event to listen to");
+				LogWrapper.LogWarningFormat("Event listener {0} has no event to listen to", gameObject.name);
 			}
 		}
 

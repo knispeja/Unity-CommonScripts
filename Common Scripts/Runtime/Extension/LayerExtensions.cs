@@ -1,5 +1,6 @@
 ﻿namespace KnispelCommon.Extension
 {
+	using KnispelCommon.Logging;
 	using UnityEngine;
 
 	/// <summary>
@@ -14,7 +15,7 @@
 			int sortingLayerId = SortingLayer.NameToID(layerName);
 			if (sortingLayerId == 0)
 			{
-				Debug.LogWarning($"Provided layer name '{layerName}' is not valid.");
+				LogWrapper.LogWarningFormat("Provided layer name '{0}' is not valid.", layerName);
 				return false;
 			}
 
@@ -26,7 +27,7 @@
 		{
 			if (!SortingLayer.IsValid(layerId))
 			{
-				Debug.LogWarning($"Provided layer ID '{layerId}' is not valid.");
+				LogWrapper.LogWarningFormat("Provided layer ID '{0}' is not valid.", layerId);
 				return false;
 			}
 

@@ -1,5 +1,6 @@
 ﻿namespace KnispelCommon.ComponentPool
 {
+	using KnispelCommon.Logging;
 	using System;
 	using System.Collections.Generic;
 	using UnityEngine;
@@ -48,18 +49,18 @@
 					if (!warnActive)
 					{
 						warnActive = true;
-						Debug.LogWarning("Component pool must be provided inactive objects to begin with");
+						LogWrapper.LogWarning("Component pool must be provided inactive objects to begin with");
 					}
 				}
 
 				if (!warnDuplicates && !quickComponents.Add(component))
 				{
-					Debug.LogWarning("Component pool should not be provided duplicate components");
+					LogWrapper.LogWarning("Component pool should not be provided duplicate components");
 				}
 
 				if (!warnParent && component.transform.parent != ComponentParent)
 				{
-					Debug.LogWarning("Component pool should be provided objects that share a common parent");
+					LogWrapper.LogWarning("Component pool should be provided objects that share a common parent");
 				}
 			}
 #endif
@@ -122,7 +123,7 @@
 		{
 			if (inactivePooledComponents.Count <= 0)
 			{
-				Debug.LogWarning($"Pool size of exceeded -- failed to create object. Expanding the pool of objects is recommended.");
+				LogWrapper.LogWarning($"Pool size of exceeded -- failed to create object. Expanding the pool of objects is recommended.");
 				return null;
 			}
 
@@ -137,7 +138,7 @@
 #if UNITY_EDITOR
 			if (!component.gameObject.activeInHierarchy)
 			{
-				Debug.LogWarning("Pooled component was instantiated in an inactive tree -- this is not supported");
+				LogWrapper.LogWarningWithContext("Pooled component was instantiated in an inactive tree -- this is not supported", component.gameObject);
 			}
 #endif
 
@@ -158,7 +159,7 @@
 		{
 			if (!activePooledComponents.Add(component))
 			{
-				Debug.LogWarning($"{nameof(ComponentPool<T>)} does not support pooled objects being activated without using {nameof(InstantiateFromPool)}.");
+				LogWrapper.LogWarningWithContext($"{nameof(ComponentPool<T>)} does not support pooled objects being activated without using {nameof(InstantiateFromPool)}.", component.gameObject);
 			}
 		}
 
