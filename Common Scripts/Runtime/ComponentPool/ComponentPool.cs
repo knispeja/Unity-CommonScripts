@@ -37,6 +37,7 @@
 			ComponentParent = inactiveComponentPool.Peek().transform.parent;
 
 #if UNITY_EDITOR
+			// Editor-only pool validation
 			bool warnActive = false;
 			bool warnDuplicates = false;
 			bool warnParent = false;
@@ -49,18 +50,18 @@
 					if (!warnActive)
 					{
 						warnActive = true;
-						LogWrapper.LogWarning("Component pool must be provided inactive objects to begin with");
+						LogWrapper.LogWarning("Component pool must be provided inactive objects to begin with, but was provided at least one active object. This message will only show up in the editor.");
 					}
 				}
 
 				if (!warnDuplicates && !quickComponents.Add(component))
 				{
-					LogWrapper.LogWarning("Component pool should not be provided duplicate components");
+					LogWrapper.LogWarning("Component pool should not be provided duplicate components. This message will only show up in the editor.");
 				}
 
 				if (!warnParent && component.transform.parent != ComponentParent)
 				{
-					LogWrapper.LogWarning("Component pool should be provided objects that share a common parent");
+					LogWrapper.LogWarning("Component pool should be provided objects that share a common parent. This message will only show up in the editor.");
 				}
 			}
 #endif
@@ -119,11 +120,13 @@
 			return inactivePooledComponents.Count <= 0;
 		}
 
-		public T InstantiateFromPool()
+		public T InstantiateFromPool(LogLevel logLevelWhenPoolEmpty = LogLevel.ERROR)
 		{
 			if (inactivePooledComponents.Count <= 0)
 			{
-				LogWrapper.LogWarning($"Pool size of exceeded -- failed to create object. Expanding the pool of objects is recommended.");
+				// TODO: Implement option to instantiate from prefab in this situation
+
+				LogWrapper.LogFormat(logLevelWhenPoolEmpty, "Pool size of {0} exceeded -- failed to create object. Expanding the pool of objects is recommended.", TotalComponentCount);
 				return null;
 			}
 
@@ -138,7 +141,7 @@
 #if UNITY_EDITOR
 			if (!component.gameObject.activeInHierarchy)
 			{
-				LogWrapper.LogWarningWithContext("Pooled component was instantiated in an inactive tree -- this is not supported", component.gameObject);
+				LogWrapper.LogWarningWithContext("Pooled component was instantiated in an inactive tree -- this is not supported. This message will only show up in the editor.", component.gameObject);
 			}
 #endif
 

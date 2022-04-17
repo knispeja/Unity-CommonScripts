@@ -10,12 +10,12 @@
 	/// </summary>
 	public static class LayerExtensions
 	{
-		public static bool TrySetLayer(this Renderer renderer, string layerName)
+		public static bool TrySetLayer(this Renderer renderer, string layerName, LogLevel logLevelOnInvalidLayer = LogLevel.ERROR)
 		{
 			int sortingLayerId = SortingLayer.NameToID(layerName);
 			if (sortingLayerId == 0)
 			{
-				LogWrapper.LogWarningFormat("Provided layer name '{0}' is not valid.", layerName);
+				LogWrapper.LogFormat(logLevelOnInvalidLayer, "Provided layer name '{0}' is not valid.", layerName);
 				return false;
 			}
 
@@ -23,11 +23,11 @@
 			return true;
 		}
 
-		public static bool TrySetLayer(this Renderer renderer, int layerId)
+		public static bool TrySetLayer(this Renderer renderer, int layerId, LogLevel logLevelOnInvalidLayer = LogLevel.ERROR)
 		{
 			if (!SortingLayer.IsValid(layerId))
 			{
-				LogWrapper.LogWarningFormat("Provided layer ID '{0}' is not valid.", layerId);
+				LogWrapper.LogFormat(logLevelOnInvalidLayer, "Provided layer ID '{0}' is not valid.", layerId);
 				return false;
 			}
 

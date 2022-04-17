@@ -5,6 +5,113 @@ namespace KnispelCommon.Logging
 
 	public static class LogWrapper
 	{
+		#region GENERIC
+		public static void Log(LogLevel logLevel, object message)
+		{
+			switch (logLevel)
+			{
+				case LogLevel.NONE:
+					break;
+				case LogLevel.DEBUG:
+					LogDebug(message);
+					break;
+				case LogLevel.INFORMATION:
+					LogInformation(message);
+					break;
+				case LogLevel.WARNING:
+					LogWarning(message);
+					break;
+				case LogLevel.ERROR:
+					LogError(message);
+					break;
+				default:
+					OnLogLevelProblemWithWrapper(logLevel);
+					break;
+			}
+		}
+
+		public static void LogWithContext(LogLevel logLevel, object message, UnityEngine.Object context)
+		{
+			switch (logLevel)
+			{
+				case LogLevel.NONE:
+					break;
+				case LogLevel.DEBUG:
+					LogDebugWithContext(message, context);
+					break;
+				case LogLevel.INFORMATION:
+					LogInformationWithContext(message, context);
+					break;
+				case LogLevel.WARNING:
+					LogWarningWithContext(message, context);
+					break;
+				case LogLevel.ERROR:
+					LogErrorWithContext(message, context);
+					break;
+				default:
+					OnLogLevelProblemWithWrapper(logLevel);
+					break;
+			}
+		}
+
+		public static void LogFormat(LogLevel logLevel, string message, params object[] args)
+		{
+			switch (logLevel)
+			{
+				case LogLevel.NONE:
+					break;
+				case LogLevel.DEBUG:
+					LogDebugFormat(message, args);
+					break;
+				case LogLevel.INFORMATION:
+					LogInformationFormat(message, args);
+					break;
+				case LogLevel.WARNING:
+					LogWarningFormat(message, args);
+					break;
+				case LogLevel.ERROR:
+					LogErrorFormat(message, args);
+					break;
+				default:
+					OnLogLevelProblemWithWrapper(logLevel);
+					break;
+			}
+		}
+
+		public static void LogFormatWithContext(LogLevel logLevel, UnityEngine.Object context, string message, params object[] args)
+		{
+			switch (logLevel)
+			{
+				case LogLevel.NONE:
+					break;
+				case LogLevel.DEBUG:
+					LogDebugFormatWithContext(message, context, args);
+					break;
+				case LogLevel.INFORMATION:
+					LogInformationFormatWithContext(message, context, args);
+					break;
+				case LogLevel.WARNING:
+					LogWarningFormatWithContext(message, context, args);
+					break;
+				case LogLevel.ERROR:
+					LogErrorFormatWithContext(message, context, args);
+					break;
+				default:
+					OnLogLevelProblemWithWrapper(logLevel);
+					break;
+			}
+		}
+
+		private static void OnLogLevelProblemWithWrapper(LogLevel logLevel)
+		{
+			LogErrorFormat(
+					"Log level {0} not supported by log wrapper. Something went catastrophically wrong.",
+					Enum.GetName(typeof(LogLevel), logLevel)
+				);
+		}
+
+		#endregion
+
 		#region ERROR
 		[Conditional("LOGLEVEL_ERROR")]
 		[Conditional("LOGLEVEL_WARNING")]
@@ -37,7 +144,7 @@ namespace KnispelCommon.Logging
 		[Conditional("LOGLEVEL_WARNING")]
 		[Conditional("LOGLEVEL_INFORMATION")]
 		[Conditional("LOGLEVEL_DEBUG")]
-		public static void LogErrorFormatWithContext(UnityEngine.Object context, string message, params object[] args)
+		public static void LogErrorFormatWithContext(string message, UnityEngine.Object context, params object[] args)
 		{
 			UnityEngine.Debug.LogErrorFormat(context, message, args);
 		}
@@ -89,7 +196,7 @@ namespace KnispelCommon.Logging
 		[Conditional("LOGLEVEL_WARNING")]
 		[Conditional("LOGLEVEL_INFORMATION")]
 		[Conditional("LOGLEVEL_DEBUG")]
-		public static void LogWarningFormatWithContext(UnityEngine.Object context, string message, params object[] args)
+		public static void LogWarningFormatWithContext(string message, UnityEngine.Object context, params object[] args)
 		{
 			UnityEngine.Debug.LogWarningFormat(context, message, args);
 		}
@@ -119,7 +226,7 @@ namespace KnispelCommon.Logging
 
 		[Conditional("LOGLEVEL_INFORMATION")]
 		[Conditional("LOGLEVEL_DEBUG")]
-		public static void LogInformationFormatWithContext(UnityEngine.Object context, string message, params object[] args)
+		public static void LogInformationFormatWithContext(string message, UnityEngine.Object context, params object[] args)
 		{
 			UnityEngine.Debug.LogFormat(context, message, args);
 		}
@@ -145,7 +252,7 @@ namespace KnispelCommon.Logging
 		}
 
 		[Conditional("LOGLEVEL_DEBUG")]
-		public static void LogDebugFormatWithContext(UnityEngine.Object context, string message, params object[] args)
+		public static void LogDebugFormatWithContext(string message, UnityEngine.Object context, params object[] args)
 		{
 			UnityEngine.Debug.LogFormat(context, message, args);
 		}

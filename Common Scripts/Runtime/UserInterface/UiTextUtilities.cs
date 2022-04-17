@@ -28,7 +28,7 @@
 		{
 			if (canvas.renderMode != RenderMode.ScreenSpaceCamera)
 			{
-				LogWrapper.LogWarning($"{nameof(UiTextUtilities)} only work when canvas is rendering in camera space");
+				LogWrapper.LogError($"{nameof(UiTextUtilities)} only work when canvas is rendering in camera space");
 			}
 		}
 #endif

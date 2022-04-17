@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.1.0]
+### Added
+- Additional methods in `LogWrapper` that allow setting log level at runtime
+
+### Changed
+- Some methods now have optional log level parameters
+- Clarified that some editor-only error messages will not show up in release builds
+
 ## [3.0.0]
 ### Added
 - `LogWrapper` class for easily configuring logging levels in a way that completely compiles away slow logging statements
