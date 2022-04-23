@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.0.0]
+### Added
+- Additional logging configuration to ComponentPool<T>
+- ComponentPool<T> can now instantiate prefabs even after the maximum is reached, if desired
+
+### Changed
+- ComponentPool<T> prefabs are now required to be of type T rather than GameObjects, this is a breaking change
+
 ## [3.1.0]
 ### Added
 - Additional methods in `LogWrapper` that allow setting log level at runtime

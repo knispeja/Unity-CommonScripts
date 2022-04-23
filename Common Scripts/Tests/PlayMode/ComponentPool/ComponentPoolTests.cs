@@ -31,7 +31,7 @@ namespace KnispelCommon.Tests.ComponentPool
 
 			Transform componentParent = nullComponentParentParam ? null : new GameObject("Component_Parent").transform;
 
-			var instance = new ComponentPool<TestComponent>(poolSize, prefab, componentParent);
+			var instance = new ComponentPool<TestComponent>(poolSize, component, componentParent);
 			Assert.AreEqual(poolSize, instance.TotalComponentCount);
 
 			if (nullComponentParentParam)

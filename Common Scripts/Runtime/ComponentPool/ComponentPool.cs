@@ -7,6 +7,8 @@
 
 	public class ComponentPool<T> where T : Component
 	{
+		private T originalPrefab = null;
+
 		private HashSet<T> activePooledComponents;
 		private Queue<T> inactivePooledComponents;
 
@@ -22,8 +24,16 @@
 
 		public Transform ComponentParent { get; private set; }
 
-		public ComponentPool(int poolSize, GameObject prefab, Transform parent = null) : this(CreatePoolFromPrefab(poolSize, prefab, parent))
+		public LogLevel LogLevelOnComponentDestroy { get; set; } = LogLevel.NONE;
+
+		public ComponentPool(int poolSize, T prefab, Transform parent = null) : this(CreatePoolFromPrefab(poolSize, prefab, parent))
 		{
+			originalPrefab = prefab;
+		}
+
+		public ComponentPool(int poolSize, T prefab, string customName) : this(CreatePoolFromPrefab(poolSize, prefab, customName))
+		{
+			originalPrefab = prefab;
 		}
 
 		public ComponentPool(Queue<T> inactiveComponentPool)
@@ -83,7 +93,13 @@
 			}
 		}
 
-		private static Queue<T> CreatePoolFromPrefab(int poolSize, GameObject prefab, Transform parent)
+		private static Queue<T> CreatePoolFromPrefab(int poolSize, T prefab, string customName)
+		{
+			Transform parent = ProvidePoolContainer(customName);
+			return CreatePoolFromPrefab(poolSize, prefab, parent);
+		}
+
+		private static Queue<T> CreatePoolFromPrefab(int poolSize, T prefab, Transform parent)
 		{
 			var result = new Queue<T>(poolSize);
 
@@ -95,16 +111,9 @@
 
 			for (int i = 0; i < poolSize; i++)
 			{
-				GameObject spawned = UnityEngine.Object.Instantiate(prefab, parent);
-				T component = spawned.GetComponent<T>();
-
-				if (component == null)
-				{
-					throw new ArgumentException($"Provided prefab does not contain required component {typeof(T).Name}");
-				}
-
-				spawned.SetActive(false);
-				result.Enqueue(component);
+				T spawned = UnityEngine.Object.Instantiate(prefab, parent);
+				spawned.gameObject.SetActive(false);
+				result.Enqueue(spawned);
 			}
 
 			return result;
@@ -122,10 +131,38 @@
 
 		public T InstantiateFromPool(LogLevel logLevelWhenPoolEmpty = LogLevel.ERROR)
 		{
+			return InstantiateFromPoolInternal(logLevelWhenPoolEmpty);
+		}
+
+		public T InstantiateFromPoolOrOriginalPrefab(LogLevel logLevelWhenPoolEmpty = LogLevel.ERROR)
+		{
+			if (originalPrefab == null)
+			{
+				throw new InvalidOperationException("No prefab was ever used to set up this component pool");
+			}
+
+			return InstantiateFromPoolOrPrefab(originalPrefab, logLevelWhenPoolEmpty);
+		}
+
+		public T InstantiateFromPoolOrPrefab(T prefab, LogLevel logLevelWhenPoolEmpty = LogLevel.ERROR)
+		{
+			T result = InstantiateFromPoolInternal(logLevelWhenPoolEmpty);
+			if (result == null)
+			{
+				result = UnityEngine.Object.Instantiate(prefab, ComponentParent);
+				result.gameObject.SetActive(false);
+
+				TotalComponentCount++;
+				inactivePooledComponents.Enqueue(result);
+			}
+
+			return result;
+		}
+
+		private T InstantiateFromPoolInternal(LogLevel logLevelWhenPoolEmpty)
+		{
 			if (inactivePooledComponents.Count <= 0)
 			{
-				// TODO: Implement option to instantiate from prefab in this situation
-
 				LogWrapper.LogFormat(logLevelWhenPoolEmpty, "Pool size of {0} exceeded -- failed to create object. Expanding the pool of objects is recommended.", TotalComponentCount);
 				return null;
 			}
@@ -187,6 +224,8 @@
 				// Scene is not shutting down, so just deal with this situation normally
 				activePooledComponents.Remove(component);
 				TotalComponentCount--;
+
+				LogWrapper.LogFormat(LogLevelOnComponentDestroy, "Component under parent {0} was destroyed -- deactivating is recommended for use with component pool", ComponentParent.name);
 			}
 		}
 	}

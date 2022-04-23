@@ -2,9 +2,9 @@
     "name": "JacobKnispel.CommonScripts.PlayMode.Tests",
     "rootNamespace": "",
     "references": [
+        "JacobKnispel.CommonScripts.Runtime",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "JacobKnispel.CommonScripts.Runtime"
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
